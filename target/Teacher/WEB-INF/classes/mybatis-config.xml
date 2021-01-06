@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <settings>
+        <setting name="logImpl" value="LOG4J"/>
+        <!--autoMappingBehavior:自动映射级别  常用值：NONE禁止映射  PARTIAL自动映射(默认)  FULL全自动-->
+        <!--<setting name="autoMappingBehavior" value="FULL"/>-->
+    </settings>
+    <!--别名注册-->
+    <typeAliases>
+        <!--单一别名注册-->
+       <!-- <typeAlias alias="Bill" type="com.yuntu.pojo.Bill"/>-->
+        <!--统一别名注册-->
+        <package name="pojo"/>
+    </typeAliases>
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageHelper">
+            <!--参数配置-->
+            <!-- 3.3.0版本可用 - 分页参数合理化，默认false禁用 -->
+            <!-- 启用合理化时，如果pageNum<1会查询第一页，如果pageNum>pages会查询最后一页 -->
+            <!-- 禁用合理化时，如果pageNum<1或pageNum>pages会返回空数据 -->
+            <property name="reasonable" value="true"/>
+        </plugin>
+    </plugins>
+
+</configuration>

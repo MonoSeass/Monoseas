@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.TeacherMapper">
+
+    <resultMap id="getpage" type="teacher">
+        <id property="t_id" column="t_id"/>
+        <result property="t_name" column="t_name"/>
+        <result property="t_idcard" column="t_idcard"/>
+        <result property="t_birthday" column="t_birthday"/>
+        <result property="t_loginName" column="t_loginName"/>
+        <result property="t_pwd" column="t_pwd"/>
+        <association property="sex" javaType="sex">
+            <id property="s_id" column="s_id"/>
+            <result property="s_sex" column="s_sex"/>
+        </association>
+    </resultMap>
+
+    <select id="getPage" resultMap="getpage">
+        SELECT * FROM teacher t INNER JOIN sex s ON t.t_sex = s.s_id
+    </select>
+
+
+    <insert id="addTeacher" parameterType="teacher">
+        INSERT INTO teacher (t_name, t_idcard, t_birthday, t_loginName, t_pwd, t_sex) VALUES (#{t_name},#{t_idcard},#{t_birthday},#{t_loginName},#{t_pwd},#{sex.s_id});
+    </insert>
+
+    <delete id="delTeacher" parameterType="int">
+        DELETE FROM teacher WHERE t_id = #{id}
+    </delete>
+
+    <update id="updTeacher" parameterType="teacher">
+        UPDATE teacher
+        <set>
+        <if test="t_id!=null and t_id!=''">
+            t_id=#{t_id},
+        </if>
+        <if test="t_idcard!=null and t_idcard!=''">
+            t_idcard=#{t_idcard},
+        </if>
+        <if test="t_birthday!=null ">
+            t_birthday=#{t_birthday},
+        </if>
+        <if test="t_loginName!=null and t_loginName!=''">
+            t_loginName=#{t_loginName},
+        </if>
+        <if test="t_pwd!=null and t_pwd!=''">
+            t_pwd=#{t_pwd},
+        </if>
+        <if test="sex.s_id!=null and sex.s_id!=0">
+            t_sex = #{sex.s_id},
+        </if>
+        </set>
+        <where>
+            <if test="t_id!=0 and t_id!=null">
+                t_id = #{t_id}
+            </if>
+        </where>
+    </update>
+
+    <select id="getTeacherById" parameterType="int" resultMap="getpage">
+        SELECT * FROM teacher t INNER JOIN sex s ON t.t_sex = s.s_id WHERE t.t_id = #{id}
+    </select>
+</mapper>
